@@ -30,8 +30,25 @@ fn find_increases(v: &Vec<u32>) -> u32 {
     res
 }
 
+fn find_sliding(v: &Vec<u32>) -> u32 {
+    let mut res: u32 = 0;
+
+    let mut last_sum = v[0] + v[1] + v[2];
+    let mut last_ptr: usize = 0;
+    for i in 3..v.len() {
+        let new_sum = last_sum + v[i] - v[last_ptr];
+        if new_sum > last_sum {
+            res += 1;
+        }
+        last_ptr += 1;
+        last_sum = new_sum;
+    }
+    res
+}
+
 fn main() {
     let vec = open_file("input");
     let increases = find_increases(&vec);
-    println!("Increases: {}.", increases)
+    let sliding = find_sliding(&vec);
+    println!("Increases: {}, sliding: {}.", increases, sliding);
 }
