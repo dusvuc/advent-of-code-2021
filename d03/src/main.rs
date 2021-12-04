@@ -54,8 +54,7 @@ fn get_number_of_values_at_position(position: usize, ones: bool, data: &Vec<u64>
 }
 
 fn get_filtered_vector(position: usize, ones: bool, data: Vec<u64>) -> Vec<u64> {
-    let result = data
-        .into_iter()
+    data.into_iter()
         .filter_map(|num| {
             let has_one: bool = (num & (1 << position)) != 0;
             if (has_one && ones) || (!has_one && !ones) {
@@ -63,21 +62,19 @@ fn get_filtered_vector(position: usize, ones: bool, data: Vec<u64>) -> Vec<u64> 
             }
             return None;
         })
-        .collect();
-    result
+        .collect()
 }
 
 fn get_rating(length: usize, mut data: Vec<u64>, oxy: bool) -> u64 {
     let mut position: usize = length;
     while data.len() > 1 {
         position = position - 1;
-        let zeroes = get_number_of_values_at_position(position, false, &data);
-        let ones = get_number_of_values_at_position(position, true, &data);
+        let zeroes: u64 = get_number_of_values_at_position(position, false, &data);
+        let ones: u64 = get_number_of_values_at_position(position, true, &data);
         if zeroes > ones {
             data = get_filtered_vector(position, !oxy, data);
-        } else if ones > zeroes {
-            data = get_filtered_vector(position, oxy, data);
         } else {
+            // matches both equals and |1| > |0|
             data = get_filtered_vector(position, oxy, data);
         }
     }
