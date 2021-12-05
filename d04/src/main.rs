@@ -149,7 +149,7 @@ fn calculate_bingo_score(numbers: Vec<usize>, mut boards: Vec<Board>) {
 }
 
 fn main() {
-    let (numbers, board_positions) = open_file("/home/dusan/advent-of-code-2021/d04/input");
+    let (numbers, board_positions) = open_file("input");
     let boards = Board::from_board_positions(board_positions);
     calculate_bingo_score(numbers, boards);
 }
