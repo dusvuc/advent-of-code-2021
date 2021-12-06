@@ -56,10 +56,27 @@ fn lanternfish_after_days(mut lanternfish_fleet: Vec<Lanternfish>, days: usize) 
     lanternfish_fleet.len()
 }
 
+fn lanternfish_progeny(lanternfish_fleet: &Vec<Lanternfish>, days: usize) -> usize {
+    let mut counters: Vec<usize> = vec![0; 9];
+    for lanternfish in lanternfish_fleet.iter() {
+        counters[lanternfish.age] += 1;
+    }
+    for _ in 0..days {
+        let mut new_counters: Vec<usize> = vec![0; 9];
+        for i in 1..9 {
+            new_counters[i - 1] = counters[i];
+        }
+        new_counters[6] += counters[0];
+        new_counters[8] += counters[0];
+        counters = new_counters;
+    }
+    counters.iter().sum()
+}
+
 fn main() {
     let start_lanternfish = open_file("input");
     let res1 = lanternfish_after_days(start_lanternfish.clone(), 80);
     println!("{}", res1);
-    //let res2 = lanternfish_after_days(start_lanternfish.clone(), 256);
-    //println!("{}", res2);
+    let res2 = lanternfish_progeny(&start_lanternfish, 256);
+    println!("{}", res2);
 }
